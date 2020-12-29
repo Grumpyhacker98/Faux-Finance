@@ -59,6 +59,11 @@ if (process.env.NODE_ENV === "production") {
 
 // Route links
 // app.use("/",indexRoutes)
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build'), function (err) {
+      if (err) res.status(500).send(err)
+  })
+})
 app.use("/auth", authRoutes);
 app.use("/stocks", stockRoutes);
 
