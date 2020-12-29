@@ -2,6 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  // const [registerUsername, setRegisterUsername] = useState("");
+  // const [registerPassword,] = useState("");
+  // const [] = useState("");
+  // const [] = useState("");
+
+
   return (
     <div className="App">
       <header className="App-header">
