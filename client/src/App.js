@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API from './api/axios';
 import './App.css';
 
 function App() {
@@ -9,10 +10,14 @@ function App() {
 
   const registerUser = () => {
     console.log(registerUsername, registerPassword)
+    API.register(registerUsername, registerPassword)
+      .then(res => console.log(res))
   }
 
   const loginUser = () => {
     console.log(loginUsername, loginPassword)
+    API.register(registerUsername, registerPassword)
+      .then(res => console.log(res))
   }
 
   return (
