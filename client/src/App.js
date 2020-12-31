@@ -1,28 +1,33 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  // const [registerUsername, setRegisterUsername] = useState("");
-  // const [registerPassword,] = useState("");
-  // const [] = useState("");
-  // const [] = useState("");
+  const [registerUsername, setRegisterUsername] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
+  const registerUser = () => {
+    console.log(registerUsername, registerPassword)
+  }
+
+  const loginUser = () => {
+    console.log(loginUsername, loginPassword)
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div>
+          <input onChange={e => setRegisterUsername(e.target.value)} />
+          <input onChange={e => setRegisterPassword(e.target.value)} />
+          <button onClick={() => registerUser()}>Click</button>
+        </div>
+        <div>
+          <input onChange={e => setLoginUsername(e.target.value)} />
+          <input onChange={e => setLoginPassword(e.target.value)} />
+          <button onClick={() => loginUser()}>Click</button>
+        </div>
       </header>
     </div>
   );

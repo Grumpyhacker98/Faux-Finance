@@ -12,7 +12,6 @@ const userSchema = new Schema({
             purchaseValue: { type: Number },
         }
     ]
-
 });
 
 const User = mongoose.model("User", userSchema);
