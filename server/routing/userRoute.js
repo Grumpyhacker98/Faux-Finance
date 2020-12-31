@@ -2,8 +2,10 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const UserSchema = require("../config/mongoUser");
 
+
 router.route("/register")
     .post((req, res) => {
+        console.log(req.body);
         UserSchema.findOne({ username: req.body.username }, async (err, user) => {
             if (err) return console.log(err);
             if (user) return console.log("err");
@@ -23,10 +25,21 @@ router.route("/register")
 router.route("/login")
     .post((req, res) => {
         console.log(req.body);
-        UserSchema.findOne({ username: req.body.username }, (err, doc) => {
-            if (err) throw console.log(err);
-            console.log(doc);
+        passport.authenticate("local", (err, user, info) => {
+            if (err) throw (err);
+            if (!user) res.send("No user found");
+            else {
+                req.logIn(user, err => {
+                    if (err) throw err;
+                    res.send("Login sucessful")
+                })
+            }
         })
+        // UserSchema.findOne({ username: req.body.username }, (err, user) => {
+        //     if (err) throw console.log(err);
+
+        //     console.log(user);
+        // })
     })
 
 
