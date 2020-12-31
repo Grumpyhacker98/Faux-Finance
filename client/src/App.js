@@ -20,6 +20,11 @@ function App() {
       .then(res => console.log(res))
   }
 
+  const getUser = () => {
+    API.getUser()
+      .then(res => console.log(res))
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -32,6 +37,9 @@ function App() {
           <input onChange={e => setLoginUsername(e.target.value)} />
           <input onChange={e => setLoginPassword(e.target.value)} />
           <button onClick={() => loginUser()}>Click</button>
+        </div>
+        <div>
+          <button onClick={() => getUser()}>Click</button>
         </div>
       </header>
     </div>
