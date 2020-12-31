@@ -10,8 +10,9 @@ const PORT = process.env.PORT || 3001;
 
 // Connect to the Mongo DB
 const mongoose = require("mongoose");
+const User = require("./schema/user");
 mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost/fauxfinancedata",
+    process.env.MONGODB_URI || "mongodb://localhost/fauxfinance",
     { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
@@ -37,10 +38,26 @@ app.use(cookieParser("cookieKey"))
 // will be moved
 app.post("/register", (req, res) => {
     console.log(req.body);
+    User.findOne({ name: req.body.username }, (err, doc) => {
+        if (err) throw console.log(err);
+        console.log(doc);
+        let newUser = new User({
+            username: req.body.username,
+            password: req.body.password,
+            worth: 10000
+        })
+        newUser.save()
+        res.send("created User")
+    })
 })
 
 app.post("/login", (req, res) => {
     console.log(req.body);
+    User.findOne({ username: req.body.username }, (err, doc) => {
+        if (err) throw console.log(err);
+        console.log(doc);
+
+    })
 })
 
 app.get("/", (req, res) => {

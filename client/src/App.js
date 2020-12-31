@@ -16,7 +16,7 @@ function App() {
 
   const loginUser = () => {
     console.log(loginUsername, loginPassword)
-    API.register(registerUsername, registerPassword)
+    API.login(loginUsername, loginPassword)
       .then(res => console.log(res))
   }
 
