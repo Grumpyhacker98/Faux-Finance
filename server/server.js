@@ -1,29 +1,29 @@
-const mongoose = require("mongoose");
-const express = require("express");
-const cors = require("cors");
 const passport = require("passport");
 // const localStrategy = require("passport-local").Strategy();
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const expressSession = require("express-session");
-const bodyParser = require("body-parser");
 
+const express = require("express");
 const app = express()
 const PORT = process.env.PORT || 3001;
 
-// middleware
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+// Connect to the Mongo DB
+const mongoose = require("mongoose");
+mongoose.connect(
+    process.env.MONGODB_URI || "mongodb://localhost/fauxfinancedata",
+    { useNewUrlParser: true, useUnifiedTopology: true }
+);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// middleware
+const cors = require("cors");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use(cors({
     origin: "http://localhost:3000",
     credientials: true,
 }))
-
-
 
 app.use(expressSession({
     secret: "cookieKey",
@@ -33,6 +33,7 @@ app.use(expressSession({
 app.use(cookieParser("cookieKey"))
 
 
+// routes
 // will be moved
 app.post("/register", (req, res) => {
     console.log(req.body);
