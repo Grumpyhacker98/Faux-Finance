@@ -1,5 +1,4 @@
 const expressSession = require("express-session");
-// const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -28,9 +27,9 @@ app.use(cors({
 app.use(expressSession({
     secret: "cookieKey",
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: true }
 }));
-// app.use(cookieParser("cookieKey"));
 
 // passport
 app.use(passport.initialize());
@@ -47,18 +46,17 @@ app.post("/login", (req, res, next) => {
             console.log("user authenticating....")
             req.logIn(user, err => {
                 if (err) throw console.log(err);
-                console.log(user)
                 res.send("Login sucessful")
+                console.log(req.user)
             })
-            console.log(req.user)
         }
-        
     })(req, res, next);
 })
 
 app.get("/user", (req, res) => {
     console.log(req)
     console.log(req.user);
+    console.log(req.session);
 })
 
 // Start the API server

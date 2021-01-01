@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// axios.defaults.withCredentials = true;
+
 const API = {
     register: (username, password) => {
         return new Promise((resolve, reject) => {

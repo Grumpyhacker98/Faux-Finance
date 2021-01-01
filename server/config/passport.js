@@ -18,11 +18,13 @@ module.exports = function (passport) {
     }))
     // create user cookie
     passport.serializeUser((user, cb) => {
+        console.log("serializing")
         cb(null, user.id)
     })
     // take cookie and find user then return user data
     // does not remove cookieParser, just parse serial number and find other user info
     passport.deserializeUser((id, cb) => {
+        console.log(id)
         UserSchema.findOne({ _id: id }, (err, user) => {
             cb(err, user)
         })
