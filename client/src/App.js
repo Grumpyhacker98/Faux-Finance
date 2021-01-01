@@ -9,13 +9,11 @@ function App() {
   const [loginPassword, setLoginPassword] = useState("");
 
   const registerUser = () => {
-    console.log(registerUsername, registerPassword)
     API.register(registerUsername, registerPassword)
       .then(res => console.log(res))
   }
 
   const loginUser = () => {
-    console.log(loginUsername, loginPassword)
     API.login(loginUsername, loginPassword)
       .then(res => console.log(res))
   }
