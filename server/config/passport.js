@@ -7,10 +7,10 @@ module.exports = function (passport) {
     // done(error, user data)
     passport.use(new LocalStrategy((username, password, done) => {
         UserSchema.findOne({ username: username }, (err, user) => {
-            if (err) throw done(err, false);
-            if (!user) throw done("user exists", false);
+            if (err) return done(err, false);
+            if (!user) return done("user exists", false);
             bcrypt.compare(password, user.password, (err, result) => {
-                if (err) throw done(err, false);
+                if (err) return done(err, false);
                 if (result) return done(null, user);
                 else return done("password fail", false);
             })

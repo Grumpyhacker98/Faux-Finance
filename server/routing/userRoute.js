@@ -7,7 +7,6 @@ const passport = require("../server");
 
 router.route("/register")
     .post((req, res) => {
-        console.log(req.body);
         UserSchema.findOne({ username: req.body.username }, async (err, user) => {
             if (err) return console.log(err);
             if (user) return console.log("user already exists");

@@ -15,7 +15,7 @@ const API = {
                     password: password
                 },
                 url: "http://localhost:3001/register",
-                // withCredentials: true
+                withCredentials: true,
 
             })
                 .catch(err => reject(err))

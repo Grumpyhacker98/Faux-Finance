@@ -22,7 +22,8 @@ app.use(express.json());
 
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+    res.setHeader('Access-Control-Allow-Origin', "http://localhost:3000");
+    // console.log(req.headers.origin);
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
@@ -37,7 +38,7 @@ app.use(function (req, res, next) {
 
 app.use(cors({
     origin: "http://localhost:3000",
-    credientials: false,
+    credientials: "include",
 }));
 app.use(passport.initialize());
 
@@ -46,8 +47,8 @@ app.use(expressSession({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        secure: true,
-        maxAge: 6 * 60 * 60 * 1000
+        secure: false,
+        maxAge: null,
     },
 }))
 app.use(cookieParser())
@@ -60,25 +61,25 @@ require('./config/passport')(passport);
 app.use(userRoutes)
 app.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user) => {
-        if (err) throw console.log(err);
-        if (!user) res.send("No user found");
-        else {
-            req.logIn(user, err => {
-                if (err) return console.log(err);
-                console.log(req.user)
-                console.log(req.session)
-                // req.session.user = req.user;
-                res.send("Login sucessful")
-            })
-        }
+        if (err) return console.log(err);
+        console.log(user);
+        if (!user) return res.send("No user found");
+        else req.login(user, err => {
+            if (err) return console.log(err);
+            res.send("Login sucessful")
+            console.log(req.session.passport.user)
+        })
     })(req, res, next);
 })
 
+app.get("/logout", (req, res,) => {
+
+})
+
 app.get("/user", (req, res) => {
-    console.log(req.user)
-    console.log(req.session)
-    console.log(req.cookies)
-    // console.log()
+    console.log(req.session.passport.user)
+    console.log(req)
+    res.send("end")
 })
 
 // Start the API server
