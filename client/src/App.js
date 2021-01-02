@@ -10,7 +10,7 @@ function App() {
   const [loginPassword, setLoginPassword] = useState("");
 
   useEffect(() => {
-    // console.log(document.cookie)
+    console.log(document.cookie)
   });
 
   const registerUser = () => {
@@ -30,6 +30,7 @@ function App() {
 
   const logOut = () => {
     API.logOut()
+      .then(setUser(null))
   }
 
   return (

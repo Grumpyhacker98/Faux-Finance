@@ -44,13 +44,13 @@ app.use(cors({
     origin: "http://localhost:3000",
     credientials: "include",
 }));
-app.use(passport.initialize());
 
 app.use(expressSession({
     secret: "cookieKey",
     resave: true,
     saveUninitialized: true,
     cookie: {
+        httpOnly: false,
         secure: false,
         maxAge: null,
     },
@@ -58,8 +58,9 @@ app.use(expressSession({
 app.use(cookieParser())
 
 // passport
-app.use(passport.session());
 require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use(userRoutes)
@@ -86,6 +87,9 @@ app.post("/register", (req, res) => {
                             name: savedUser.username,
                             worth: newUser.worth,
                         }
+                        // req.session.user = 
+                        console.log(req.session)
+                        console.log(req.user)
                         res.send(returnUser);
                     }
                 })
@@ -95,25 +99,20 @@ app.post("/register", (req, res) => {
 })
 
 app.post("/login", (req, res, next) => {
-    console.log(req.body)
     passport.authenticate("local", (err, user) => {
         if (err) console.log(err)
         if (!user) console.log("No user found")
-        console.log(user)
         let returnUser = {
             name: user.username,
             worth: user.worth,
             stockData: user.stockData
         }
-        req.login(returnUser, err => {
-            if (err) console.log(err)
-            else res.send(returnUser);
-        })
+        res.send(returnUser);
+        console.log(req.session)
     })(req, res, next);
 })
 
 app.get("/logout", (req, res,) => {
-    console.log(req.session)
 
 
 
@@ -121,13 +120,22 @@ app.get("/logout", (req, res,) => {
 })
 
 app.get("/user", (req, res) => {
-    console.log(req.session)
-    console.log(req.session.passport.id)
-    UserSchema.findById(req.session.passport.id, (err, user) => {
-        if (err) console.log(err)
-        console.log(user)
-        // else res.send(user)
-    })
+    console.log(req.isAuthenticated())
+    if (req.user) {
+        console.log("FOUND" + req.user)
+    } else {
+        console.log("no req.user")
+    }
+
+    console.log(req.session);
+    console.log("ping");
+
+    res.send(req.session)
+    // UserSchema.findById(req.session.passport.id, (err, user) => {
+    //     if (err) console.log(err)
+    //     console.log(user)
+    //     // else res.send(user)
+    // })
 })
 
 // Start the API server

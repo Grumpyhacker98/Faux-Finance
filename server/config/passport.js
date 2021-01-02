@@ -7,23 +7,26 @@ module.exports = function (passport) {
     passport.use(new LocalStrategy((username, password, done) => {
         UserSchema.findOne({ username: username }, (err, user) => {
             if (err) console.log(err)
-            if (err) return done(err, false);
-            if (!user) return done("user exists", false);
+            if (err) return done(err, null);
+            if (!user) return done("user already exists", null);
             bcrypt.compare(password, user.password, (err, result) => {
                 if (err) console.log(err)
-                if (err) return done(err, false);
+                if (err) return done(err, null);
+                if (result) console.log("user found")
                 if (result) return done(null, user);
-                else return done("password fail", false);
+                else return done("password fail", null);
             })
         })
     }))
     // create user cookie after authentication
     passport.serializeUser((user, cb) => {
-        cb(null, user.id)
+        console.log("serializing")
+        cb(null, user._id)
     })
     // take cookie and find user then return user data
     passport.deserializeUser((id, cb) => {
-        UserSchema.findOne({ _id: id }, (err, user) => {
+        console.log("deserializing")
+        UserSchema.findById(id, (err, user) => {
             cb(err, user)
         })
     })

@@ -58,7 +58,7 @@ const API = {
                 withCredentials: true
             })
                 .catch(err => reject(err))
-                .then(res => resolve(res))
+                .then(resolve())
         })
     }
 }
