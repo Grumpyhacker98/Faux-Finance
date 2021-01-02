@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const userRoutes = require("./routing/userRoute");
 
+const UserSchema = require("./config/mongoUser");
+const bcrypt = require("bcryptjs");
+
+
 var cookieParser = require('cookie-parser')
 
 const app = express()
@@ -59,27 +63,71 @@ require('./config/passport')(passport);
 
 
 app.use(userRoutes)
+app.post("/", (req, res, next) => {
+    console.log("ping")
+})
+
+app.post("/register", (req, res) => {
+    UserSchema.findOne({ username: req.body.username }, async (err, user) => {
+        if (err) console.log(err)
+        if (user) console.log("user exists")
+        if (!user) {
+            let encryptedPassword = await bcrypt.hash(req.body.password, 10)
+            let newUser = new UserSchema({
+                username: req.body.username,
+                password: encryptedPassword,
+                worth: 10000,
+            })
+            newUser.save().then(savedUser =>
+                req.login(savedUser, err => {
+                    if (err) console.log(err)
+                    else {
+                        let returnUser = {
+                            name: savedUser.username,
+                            worth: newUser.worth,
+                        }
+                        res.send(returnUser);
+                    }
+                })
+            )
+        }
+    })
+})
+
 app.post("/login", (req, res, next) => {
+    console.log(req.body)
     passport.authenticate("local", (err, user) => {
-        if (err) return console.log(err);
-        console.log(user);
-        if (!user) return res.send("No user found");
-        else req.login(user, err => {
-            if (err) return console.log(err);
-            res.send("Login sucessful")
-            console.log(req.session.passport.user)
+        if (err) console.log(err)
+        if (!user) console.log("No user found")
+        console.log(user)
+        let returnUser = {
+            name: user.username,
+            worth: user.worth,
+            stockData: user.stockData
+        }
+        req.login(returnUser, err => {
+            if (err) console.log(err)
+            else res.send(returnUser);
         })
     })(req, res, next);
 })
 
 app.get("/logout", (req, res,) => {
+    console.log(req.session)
 
+
+
+    res.send("ping")
 })
 
 app.get("/user", (req, res) => {
-    console.log(req.session.passport.user)
-    console.log(req)
-    res.send("end")
+    console.log(req.session)
+    console.log(req.session.passport.id)
+    UserSchema.findById(req.session.passport.id, (err, user) => {
+        if (err) console.log(err)
+        console.log(user)
+        // else res.send(user)
+    })
 })
 
 // Start the API server

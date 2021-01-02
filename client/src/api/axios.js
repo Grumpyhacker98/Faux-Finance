@@ -45,9 +45,18 @@ const API = {
                 method: "GET",
                 url: "http://localhost:3001/user",
                 withCredentials: true
-
             })
-                // axios.get("http://localhost:3001/user")
+                .catch(err => reject(err))
+                .then(res => resolve(res))
+        })
+    },
+    logOut: () => {
+        return new Promise((resolve, reject) => {
+            axios({
+                method: "GET",
+                url: "http://localhost:3001/logout",
+                withCredentials: true
+            })
                 .catch(err => reject(err))
                 .then(res => resolve(res))
         })

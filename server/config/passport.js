@@ -4,12 +4,13 @@ const LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function (passport) {
     // user authentication strategy
-    // done(error, user data)
     passport.use(new LocalStrategy((username, password, done) => {
         UserSchema.findOne({ username: username }, (err, user) => {
+            if (err) console.log(err)
             if (err) return done(err, false);
             if (!user) return done("user exists", false);
             bcrypt.compare(password, user.password, (err, result) => {
+                if (err) console.log(err)
                 if (err) return done(err, false);
                 if (result) return done(null, user);
                 else return done("password fail", false);
