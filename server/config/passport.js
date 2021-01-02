@@ -2,7 +2,7 @@ const UserSchema = require('./mongoUser');
 const bcrypt = require('bcryptjs');
 const LocalStrategy = require("passport-local").Strategy;
 
-module.exports = function (passport) {
+module.exports = (passport) => {
     // user authentication strategy, called during passport.authenticate('local')
     passport.use(new LocalStrategy((username, password, done) => {
         UserSchema.findOne({ username: username }, (err, user) => {
