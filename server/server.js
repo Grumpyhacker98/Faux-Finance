@@ -82,16 +82,12 @@ app.post("/register", (req, res) => {
             newUser.save().then(savedUser =>
                 req.login(savedUser, err => {
                     if (err) console.log(err)
-                    else {
-                        let returnUser = {
-                            name: savedUser.username,
-                            worth: newUser.worth,
-                        }
-                        // req.session.user = 
-                        console.log(req.session)
-                        console.log(req.user)
-                        res.send(returnUser);
+                    let returnUser = {
+                        name: savedUser.username,
+                        worth: newUser.worth,
                     }
+                    console.log("user created")
+                    res.send(returnUser);
                 })
             )
         }
@@ -110,6 +106,7 @@ app.post("/login", (req, res, next) => {
                     worth: user.worth,
                     stockData: user.stockData
                 }
+                console.log("user login")
                 res.send(returnUser);
             }
         })
@@ -118,28 +115,17 @@ app.post("/login", (req, res, next) => {
 
 app.get("/logout", (req, res,) => {
 
-
+    console.log("user logout")
+    req.logout()
 
     res.send("ping")
 })
 
 app.get("/user", (req, res) => {
-    console.log(req.isAuthenticated())
-    if (req.user) {
-        console.log("FOUND" + req.user)
-    } else {
-        console.log("no req.user")
-    }
 
-    console.log(req.session);
-    console.log("ping");
+    console.log("user getData")
+    console.log(req.user)
 
-    res.send(req.session)
-    // UserSchema.findById(req.session.passport.id, (err, user) => {
-    //     if (err) console.log(err)
-    //     console.log(user)
-    //     // else res.send(user)
-    // })
 })
 
 // Start the API server
