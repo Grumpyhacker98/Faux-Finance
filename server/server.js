@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     // Pass to next layer of middleware
     next();
 });
@@ -102,13 +102,17 @@ app.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user) => {
         if (err) console.log(err)
         if (!user) console.log("No user found")
-        let returnUser = {
-            name: user.username,
-            worth: user.worth,
-            stockData: user.stockData
-        }
-        res.send(returnUser);
-        console.log(req.session)
+        req.login(user, err => {
+            if (err) console.log(err)
+            else {
+                let returnUser = {
+                    name: user.username,
+                    worth: user.worth,
+                    stockData: user.stockData
+                }
+                res.send(returnUser);
+            }
+        })
     })(req, res, next);
 })
 
