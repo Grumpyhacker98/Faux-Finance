@@ -13,6 +13,7 @@ module.exports = (app, passport) => {
                     username: req.body.username,
                     password: encryptedPassword,
                     worth: 10000,
+                    stockData: []
                 })
                 newUser.save().then(savedUser =>
                     req.login(savedUser, err => {
@@ -20,6 +21,7 @@ module.exports = (app, passport) => {
                         let returnUser = {
                             username: savedUser.username,
                             worth: newUser.worth,
+                            stockData: newUser.stockData
                         }
                         console.log("user created")
                         res.send(returnUser);
@@ -33,19 +35,19 @@ module.exports = (app, passport) => {
         passport.authenticate("local", (err, user) => {
             if (err) console.log(err)
             if (!user) console.log("No user found")
+            let returnUser = {
+                _id: user._id,
+                username: user.username,
+                worth: user.worth,
+                stockData: user.stockData
+            }
             req.login(user, err => {
                 if (err) console.log(err)
                 else {
-                    let returnUser = {
-                        username: user.username,
-                        worth: user.worth,
-                        stockData: user.stockData
-                    }
                     console.log("user login")
                     res.send(returnUser);
                 }
             })
-
         })(req, res, next);
     })
 
