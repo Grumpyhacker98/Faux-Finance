@@ -3,24 +3,31 @@ import API from './api/axios';
 import './App.css';
 
 function App() {
-  const [user, setUser] = useState(null);
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [user, setUser] = useState(null);
+
 
   useEffect(() => {
-    console.log(document.cookie)
+    // needs improvement
+    if (user.username === null) {
+      API.getUser().then(res => {
+        if (res.data) setUser(res.data.username);
+        else setUser(false)
+      })
+    }
   });
 
   const registerUser = () => {
     API.register(registerUsername, registerPassword)
-      .then(res => setUser(res.data.name))
+      .then(res => setUser(res.data.username))
   }
 
   const loginUser = () => {
     API.login(loginUsername, loginPassword)
-      .then(res => setUser(res.data.name))
+      .then(res => setUser(res.data.username))
   }
 
   const getUser = () => {
@@ -30,7 +37,14 @@ function App() {
 
   const logOut = () => {
     API.logOut()
-      .then(setUser(null))
+      .then(res => {
+        console.log(res)
+        setUser(null)
+      })
+  }
+
+  const test = () => {
+
   }
 
   return (
@@ -57,6 +71,9 @@ function App() {
         </div>
         <div>
           <button onClick={() => logOut()}>Logout</button>
+        </div>
+        <div>
+          <button onClick={() => test()}>Test</button>
         </div>
       </header>
     </div>

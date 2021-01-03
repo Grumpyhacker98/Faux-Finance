@@ -1,14 +1,8 @@
+const express = require("express");
 const expressSession = require("express-session");
 const cors = require("cors");
-const express = require("express");
-const mongoose = require("mongoose");
 const passport = require("passport");
-
-const UserSchema = require("./config/mongoUser");
-const bcrypt = require("bcryptjs");
-
-
-var cookieParser = require('cookie-parser')
+const mongoose = require("mongoose");
 
 const app = express()
 const PORT = process.env.PORT || 3001;
@@ -54,13 +48,13 @@ app.use(expressSession({
         maxAge: null,
     },
 }))
-app.use(cookieParser())
 
-// passport
+// passport config
 require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// routing
 require("./routing/router")(app, passport);
 
 

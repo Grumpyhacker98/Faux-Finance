@@ -2,9 +2,6 @@ const bcrypt = require("bcryptjs");
 const UserSchema = require("../config/mongoUser");
 
 module.exports = (app, passport) => {
-    app.post("/", (req, res, next) => {
-        console.log("ping")
-    })
 
     app.post("/register", (req, res) => {
         UserSchema.findOne({ username: req.body.username }, async (err, user) => {
@@ -21,7 +18,7 @@ module.exports = (app, passport) => {
                     req.login(savedUser, err => {
                         if (err) console.log(err)
                         let returnUser = {
-                            name: savedUser.username,
+                            username: savedUser.username,
                             worth: newUser.worth,
                         }
                         console.log("user created")
@@ -40,7 +37,7 @@ module.exports = (app, passport) => {
                 if (err) console.log(err)
                 else {
                     let returnUser = {
-                        name: user.username,
+                        username: user.username,
                         worth: user.worth,
                         stockData: user.stockData
                     }
@@ -62,13 +59,12 @@ module.exports = (app, passport) => {
 
     app.get("/user", (req, res) => {
 
-        console.log("user getData")
-        console.log(req.user)
         if (req.user) {
             res.send(req.user)
         } else {
             res.send(null)
         }
+
 
     })
 }
