@@ -1,36 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import NavLink from './navlink';
 
-
-export default function Navbar({ user }) {
+export default function Navbar({ user, logout }) {
 
     return (
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-            <Link to={"/"}>FauxFinance</Link>
+        <nav className="navbar navbar-expand-md navbar-light bg-dark">
             <ul className="nav">
-                <li className="nav-item active">
-                    <Link className="nav-link btn" to={"/news"}>News</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link btn" to={"/market"}>Market</Link>
-                </li>
+                <NavLink to={"/"} name={"FauxFinance"} />
+                <NavLink to={"/news"} name={"News"} />
+                <NavLink to={"/market"} name={"Market"} />
                 {user
-                    ? <li className="nav-item">
-                        <span>Welcome {user.username}</span>
-                    </li>
-                    : <li className="nav-item">
-                        <span>Register</span>
-                    </li>
-                }
-                {user
-                    ? <li className="nav-item">
-                        <span>logout</span>
-                    </li>
-                    : <li className="nav-item">
-                        <span>login</span>
-                    </li>
+                    ? <>
+                        <NavLink to={"/profile"} name={"Profile"} />
+                        <NavLink to={"/"} name={"Logout"} onClick={logout} />
+                    </>
+                    : <>
+                        <NavLink to={"/register"} name={"Register"} />
+                        <NavLink to={"/login"} name={"Login"} />
+                    </>
                 }
             </ul>
-        </nav>
+        </nav >
     )
 }

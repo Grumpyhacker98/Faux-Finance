@@ -61,12 +61,11 @@ module.exports = (app, passport) => {
 
     app.get("/user", (req, res) => {
 
+        console.log(req.user)
         if (req.user) {
             res.send(req.user)
         } else {
             res.send(null)
         }
-
-
     })
 }

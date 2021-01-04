@@ -7,85 +7,83 @@ import Navbar from './components/navbar';
 import Home from './components/home';
 import News from './components/news';
 import Market from './components/market';
+import Register from './components/register';
+import Login from './components/login';
+import Profile from './components/profile';
 
 export default function App() {
-  const [registerUsername, setRegisterUsername] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     // needs improvement
     if (user === null) {
-      API.getUser().then(res => {
-        if (res.data) setUser(res.data);
-        else setUser(false)
-      })
+      // getUser().then(res => {
+      //   console.log(res)
+      //   if (res.data) setUser(res.data);
+      //   else setUser(false)
+      // })
+      getUser()
     }
   });
 
   //    login/logout/searchUser functions
   const getUser = () => {
-    API.getUser()
+    API.getUser().then(res => {
+      console.log(res)
+      if (res.data) setUser(res.data)
+      else setUser(false)
+    })
+  }
+
+  const registerUser = (username, password) => {
+    API.register(username, password)
       .then(res => setUser(res.data))
   }
 
-  const registerUser = () => {
-    API.register(registerUsername, registerPassword)
+  const loginUser = (username, password) => {
+    API.login(username, password)
       .then(res => setUser(res.data))
   }
 
-  const loginUser = () => {
-    API.login(loginUsername, loginPassword)
-      .then(res => setUser(res.data))
-  }
-
-  const logOut = () => {
+  const logoutUser = () => {
     API.logOut()
       .then(setUser(false))
   }
 
+  const test = () => {
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <Router>
-          <div>
+      <Router>
+        <div>
 
-            <Navbar
-              user={user}
-            />
+          <Navbar
+            user={user}
+            logout={logoutUser}
+          />
+
+          <header className="App-header">
+
+            {user && <span>Hello {user.username}</span>}
 
             <div>
-              <input onChange={e => setRegisterUsername(e.target.value)} />
-              <input onChange={e => setRegisterPassword(e.target.value)} />
-              <button onClick={() => registerUser()}>Click</button>
-            </div>
-            <div>
-              <input onChange={e => setLoginUsername(e.target.value)} />
-              <input onChange={e => setLoginPassword(e.target.value)} />
-              <button onClick={() => loginUser()}>Click</button>
-            </div>
-            <div>
-              <button onClick={() => getUser()}>Click</button>
-            </div>
-            <div>
-              <button onClick={() => logOut()}>Logout</button>
-            </div>
-            <div>
-              <button onClick={() => test()}>Test</button>
+              <button onClick={() => test()}>Test-Click</button>
             </div>
 
+            {/* components when props not needed */}
             <div>
               <Route exact path='/' component={Home} />
               <Route exact path='/news' component={News} />
               <Route exact path='/market' component={Market} />
-              {/* <Route exact path='/profile' component={Profile} /> */}
+              <Route exact path='/profile' component={Profile} />
+              <Route exact path='/register' render={() => <Register registerUser={registerUser} />} />
+              <Route exact path='/login' render={() => <Login loginUser={loginUser} />} />
             </div>
-          </div>
-        </Router>
-
-      </header>
+          </header>
+        </div>
+      </Router>
     </div>
   );
 }
