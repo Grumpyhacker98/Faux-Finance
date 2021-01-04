@@ -14,26 +14,16 @@ import Profile from './components/profile';
 export default function App() {
   const [user, setUser] = useState(null);
 
+  // look for user on startup
   useEffect(() => {
     // needs improvement
     if (user === null) {
-      // getUser().then(res => {
-      //   console.log(res)
-      //   if (res.data) setUser(res.data);
-      //   else setUser(false)
-      // })
-      getUser()
+      API.getUser().then(res => {
+        if (res.data) setUser(res.data)
+        else setUser(false)
+      })
     }
   });
-
-  //    login/logout/searchUser functions
-  const getUser = () => {
-    API.getUser().then(res => {
-      console.log(res)
-      if (res.data) setUser(res.data)
-      else setUser(false)
-    })
-  }
 
   const registerUser = (username, password) => {
     API.register(username, password)
@@ -46,8 +36,7 @@ export default function App() {
   }
 
   const logoutUser = () => {
-    API.logOut()
-      .then(setUser(false))
+    API.logOut().then(setUser(false))
   }
 
   const test = () => {
@@ -57,33 +46,28 @@ export default function App() {
   return (
     <div className="App">
       <Router>
+
+        <Navbar
+          user={user}
+          logout={logoutUser}
+        />
+
+        {user && <span>Hello {user.username}</span>}
+
         <div>
+          <button onClick={() => test()}>Test-Click</button>
+        </div>
 
-          <Navbar
-            user={user}
-            logout={logoutUser}
-          />
-
-          <header className="App-header">
-
-            {user && <span>Hello {user.username}</span>}
-
-            <div>
-              <button onClick={() => test()}>Test-Click</button>
-            </div>
-
-            {/* components when props not needed */}
-            <div>
-              <Route exact path='/' component={Home} />
-              <Route exact path='/news' component={News} />
-              <Route exact path='/market' component={Market} />
-              <Route exact path='/profile' component={Profile} />
-              <Route exact path='/register' render={() => <Register registerUser={registerUser} />} />
-              <Route exact path='/login' render={() => <Login loginUser={loginUser} />} />
-            </div>
-          </header>
+        {/* components when props not needed */}
+        <div>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/news' component={News} />
+          <Route exact path='/market' component={Market} />
+          <Route exact path='/profile' component={Profile} />
+          <Route exact path='/register' render={() => <Register registerUser={registerUser} />} />
+          <Route exact path='/login' render={() => <Login loginUser={loginUser} />} />
         </div>
       </Router>
-    </div>
+    </div >
   );
 }
