@@ -3,6 +3,8 @@ const expressSession = require("express-session");
 const cors = require("cors");
 const passport = require("passport");
 const mongoose = require("mongoose");
+const history = require('connect-history-api-fallback');
+
 
 const app = express()
 const PORT = process.env.PORT || 3001;
@@ -14,6 +16,9 @@ mongoose.connect(
 );
 
 // middleware
+// react is single page, this allows router /login ect. to give login route not just an error
+app.use(history())
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -35,7 +40,7 @@ app.use(function (req, res, next) {
 
 app.use(cors({
     origin: "http://localhost:3000",
-    credientials: "include",
+    credientials: true,
 }));
 
 app.use(expressSession({
@@ -44,7 +49,7 @@ app.use(expressSession({
     saveUninitialized: true,
     cookie: {
         httpOnly: false,
-        secure: false,
+        secure: true,
         maxAge: null,
     },
 }))

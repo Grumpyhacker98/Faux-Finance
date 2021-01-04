@@ -54,9 +54,7 @@ export default function App() {
 
         {user && <span>Hello {user.username}</span>}
 
-        <div>
-          <button onClick={() => test()}>Test-Click</button>
-        </div>
+        {/* <button onClick={() => test()}>Test-Click</button> */}
 
         {/* components when props not needed */}
         <div>

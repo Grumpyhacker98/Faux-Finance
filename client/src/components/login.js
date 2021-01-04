@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../App.css';
 
 export default function Login({ loginUser }) {
     const [username, setUsername] = useState("");
@@ -6,6 +7,7 @@ export default function Login({ loginUser }) {
 
     return (
         <div>
+            <img id="coin-pile" />
             <span>Login</span>
             <div>
                 <input onChange={e => setUsername(e.target.value)} />
