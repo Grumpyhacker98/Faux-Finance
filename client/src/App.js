@@ -13,15 +13,11 @@ export default function App() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [username, setUsername] = useState(null);
-  const [netWorth, setNetWorth] = useState(null);
-  const [stocks, setStocks] = useState(null);
-
-
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     // needs improvement
-    if (username === null) {
+    if (user === null) {
       API.getUser().then(res => {
         if (res.data) setUser(res.data);
         else setUser(false)
@@ -29,22 +25,10 @@ export default function App() {
     }
   });
 
-  const setUser = (user) => {
-    setUsername(user.username);
-    setNetWorth(user.worth);
-    setStocks(user.stockData)
-  }
-
-  const unsetUser = () => {
-    setUsername(null);
-    setNetWorth(null);
-    setStocks(null)
-  }
-
   //    login/logout/searchUser functions
   const getUser = () => {
     API.getUser()
-      .then(res => console.log(res))
+      .then(res => setUser(res.data))
   }
 
   const registerUser = () => {
@@ -59,23 +43,19 @@ export default function App() {
 
   const logOut = () => {
     API.logOut()
-      .then(unsetUser())
-  }
-
-  const test = () => {
-
+      .then(setUser(false))
   }
 
   return (
     <div className="App">
       <header className="App-header">
-
         <Router>
           <div>
 
             <Navbar
-              username={username}
+              user={user}
             />
+
             <div>
               <input onChange={e => setRegisterUsername(e.target.value)} />
               <input onChange={e => setRegisterPassword(e.target.value)} />
@@ -96,33 +76,10 @@ export default function App() {
               <button onClick={() => test()}>Test</button>
             </div>
 
-
-            {/* <nav className="navbar navbar-light">
-              <Link id="brand" to={"/"}>FauxFinance</Link>
-
-              <ul className="nav">
-                <li className="nav-item active">
-                  <Link className="nav-link btn py-0" to={"/articles"}>Articles</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link btn  py-0" to={"/market"}>Market</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link btn  py-0" to={"/login"}>Log In</Link>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link btn  py-0" onClick={e => this.userLogout(e)}>Log out</a>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link btn py-0" to={"/register"}>Register</Link>
-                </li>
-              </ul>
-            </nav> */}
-
             <div>
               <Route exact path='/' component={Home} />
               <Route exact path='/news' component={News} />
-              <Route exact path='/market' render={Market} />
+              <Route exact path='/market' component={Market} />
               {/* <Route exact path='/profile' component={Profile} /> */}
             </div>
           </div>

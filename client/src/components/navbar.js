@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-export default function Navbar(props) {
+export default function Navbar({ user }) {
 
     return (
-        <nav>
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
             <Link to={"/"}>FauxFinance</Link>
-
             <ul className="nav">
                 <li className="nav-item active">
                     <Link className="nav-link btn" to={"/news"}>News</Link>
@@ -15,10 +14,15 @@ export default function Navbar(props) {
                 <li className="nav-item">
                     <Link className="nav-link btn" to={"/market"}>Market</Link>
                 </li>
-                <li className="nav-item">
-                    <span>register</span>
-                </li>
-                {props.username
+                {user
+                    ? <li className="nav-item">
+                        <span>Welcome {user.username}</span>
+                    </li>
+                    : <li className="nav-item">
+                        <span>Register</span>
+                    </li>
+                }
+                {user
                     ? <li className="nav-item">
                         <span>logout</span>
                     </li>
