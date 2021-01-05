@@ -12,7 +12,21 @@
 
 #coin-pile {
   background-image: url("./images/coins.jpg");
-  background: cover;
+  /* background: cover; */
+  background-size: cover;
+  height: 100%;
+}
+
+#piggy-bank {
+  background-image: url("./images/piggy-bank-left.jpg");
+  /* background: */
+  background-size: cover;
+  height: 100%;
+}
+
+#color-smear {
+  background-image: url("./images/colorSmear.PNG");
+  background-size: cover;
   height: 100%;
 }
 

@@ -39,10 +39,6 @@ export default function App() {
     API.logOut().then(setUser(false))
   }
 
-  const test = () => {
-
-  }
-
   return (
     <div className="App">
       <Router>
@@ -52,18 +48,14 @@ export default function App() {
           logout={logoutUser}
         />
 
-        {user && <span>Hello {user.username}</span>}
-
-        {/* <button onClick={() => test()}>Test-Click</button> */}
-
         {/* components when props not needed, render when props needed*/}
         <div className="fill-page">
-          <Route exact path='/' component={Home} />
+          <Route exact path='/' render={() => <Home user={user} />} />
           <Route exact path='/news' component={News} />
           <Route exact path='/market' component={Market} />
-          <Route exact path='/profile' component={Profile} />
+          <Route exact path='/profile' render={() => <Profile user={user} />} />
           <Route exact path='/register' render={() => <Register registerUser={registerUser} />} />
-          <Route exact path='/login' render={() => <Login loginUser={loginUser} />} />
+          <Route exact path='/login' render={() => <Login loginUser={loginUser} user={user} />} />
         </div>
       </Router>
     </div >
