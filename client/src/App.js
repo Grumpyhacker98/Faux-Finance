@@ -56,8 +56,8 @@ export default function App() {
 
         {/* <button onClick={() => test()}>Test-Click</button> */}
 
-        {/* components when props not needed */}
-        <div>
+        {/* components when props not needed, render when props needed*/}
+        <div className="fill-page">
           <Route exact path='/' component={Home} />
           <Route exact path='/news' component={News} />
           <Route exact path='/market' component={Market} />
