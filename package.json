@@ -20,7 +20,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.3",
     "cheerio": "^1.0.0-rc.5",
